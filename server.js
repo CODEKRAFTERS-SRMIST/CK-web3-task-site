@@ -158,37 +158,32 @@ app.get('/api/profile', requireAuth, async (req, res) => {
 });
 
 app.post('/api/profile', requireAuth, async (req, res) => {
-  try {
-    const {
-      handle, bio, domainInterest, discordHandle, twitterHandle,
-      githubUsername, githubConnected, walletAddress, walletName,
-    } = req.body;
+  const {
+    handle, bio, domainInterest, discordHandle, twitterHandle,
+    githubUsername, githubConnected, walletAddress, walletName,
+  } = req.body;
 
-    await sql`
-      INSERT INTO profiles (user_id, handle, bio, domain_interest, discord_handle, twitter_handle,
-        github_username, github_connected, wallet_address, wallet_name, updated_at)
-      VALUES (
-        ${req.user.id}, ${handle || null}, ${bio || null}, ${domainInterest || null},
-        ${discordHandle || null}, ${twitterHandle || null}, ${githubUsername || null},
-        ${githubConnected || false}, ${walletAddress || null}, ${walletName || null}, now()
-      )
-      ON CONFLICT (user_id) DO UPDATE SET
-        handle = COALESCE(EXCLUDED.handle, profiles.handle),
-        bio = EXCLUDED.bio,
-        domain_interest = EXCLUDED.domain_interest,
-        discord_handle = EXCLUDED.discord_handle,
-        twitter_handle = EXCLUDED.twitter_handle,
-        github_username = EXCLUDED.github_username,
-        github_connected = EXCLUDED.github_connected,
-        wallet_address = EXCLUDED.wallet_address,
-        wallet_name = EXCLUDED.wallet_name,
-        updated_at = now()
-    `;
-    res.json({ ok: true });
-  } catch (err) {
-    console.error('Error saving profile:', err);
-    res.status(500).json({ error: err.message });
-  }
+  await sql`
+    INSERT INTO profiles (user_id, handle, bio, domain_interest, discord_handle, twitter_handle,
+      github_username, github_connected, wallet_address, wallet_name, updated_at)
+    VALUES (
+      ${req.user.id}, ${handle}, ${bio}, ${domainInterest || null},
+      ${discordHandle}, ${twitterHandle}, ${githubUsername},
+      ${githubConnected || false}, ${walletAddress}, ${walletName}, now()
+    )
+    ON CONFLICT (user_id) DO UPDATE SET
+      handle = EXCLUDED.handle,
+      bio = EXCLUDED.bio,
+      domain_interest = EXCLUDED.domain_interest,
+      discord_handle = EXCLUDED.discord_handle,
+      twitter_handle = EXCLUDED.twitter_handle,
+      github_username = EXCLUDED.github_username,
+      github_connected = EXCLUDED.github_connected,
+      wallet_address = EXCLUDED.wallet_address,
+      wallet_name = EXCLUDED.wallet_name,
+      updated_at = now()
+  `;
+  res.json({ ok: true });
 });
 
 // ─── Admin endpoints ──────────────────────────────────────────────────────────
