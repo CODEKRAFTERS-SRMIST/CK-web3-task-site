@@ -39,110 +39,98 @@ export const Navigation: React.FC<NavigationProps> = ({
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-[#ff4799]/15 bg-[#090414]/90 backdrop-blur-xl">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between gap-6">
+    <header className="sticky top-0 z-40 w-full border-b border-white/[0.08] bg-[#090414]/85 backdrop-blur-2xl">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between gap-6">
         {/* Brand */}
-        <div className="flex items-center gap-8">
-          <button
-            onClick={() => onNavigate('landing')}
-            className="flex items-center gap-3.5 group text-left cursor-pointer flex-shrink-0"
-          >
-            <div className="relative w-10 h-10 rounded-xl bg-[#1b122b] border border-[#ff4799]/30 flex items-center justify-center group-hover:border-[#feb700] transition-colors shadow-sm">
-              <span className="font-mono text-xs font-black text-[#feb700] tracking-tight">CK</span>
-              <div className="absolute -inset-0.5 rounded-xl bg-[#ff4799]/20 blur-xs -z-10 group-hover:bg-[#feb700]/30 transition-all" />
-            </div>
-            <span className="font-display font-extrabold text-xl tracking-wider text-white uppercase hidden sm:inline">
-              CODEKRAFTERS
-            </span>
-          </button>
+        <button
+          onClick={() => onNavigate('landing')}
+          className="flex items-center gap-3 group text-left cursor-pointer flex-shrink-0"
+        >
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-[#ff4799]/20 to-[#feb700]/20 border border-[#ff4799]/30 flex items-center justify-center group-hover:border-[#feb700] transition-colors shadow-sm">
+            <span className="font-mono text-xs font-black text-[#feb700] tracking-tight">CK</span>
+          </div>
+          <span className="font-display font-black text-lg tracking-wider text-white uppercase hidden sm:inline">
+            CODEKRAFTERS
+          </span>
+        </button>
 
-          {/* Navigation Links with generous breathing room */}
-          <nav className="hidden lg:flex items-center gap-2 font-mono text-xs uppercase tracking-wider pl-4 border-l border-white/10">
-            {navTabs.map((tab) => (
+        {/* Center Nav Pills with Lucide Icons */}
+        <nav className="hidden md:flex items-center gap-1.5 p-1 rounded-2xl bg-white/[0.03] border border-white/[0.06] backdrop-blur-md">
+          {navTabs.map((tab) => {
+            const isActive = currentScreen === tab.id;
+            return (
               <button
                 key={tab.id}
                 onClick={() => onNavigate(tab.id)}
-                className={`px-3.5 py-2 rounded-xl flex items-center gap-2 transition-all cursor-pointer ${
-                  currentScreen === tab.id
-                    ? 'bg-[#ff4799]/20 text-[#feb700] font-bold border border-[#ff4799]/40 shadow-sm'
+                className={`px-3.5 py-1.5 rounded-xl text-xs font-mono tracking-wide transition-all cursor-pointer flex items-center gap-2 ${
+                  isActive
+                    ? 'bg-[#feb700] text-[#090414] font-bold shadow-md shadow-[#feb700]/20'
                     : tab.id === 'admin'
-                    ? 'text-[#ff4799] hover:bg-[#ff4799]/10 border border-[#ff4799]/20 ml-2'
-                    : 'text-[#e2bdc7] hover:text-white hover:bg-white/5'
+                    ? 'text-[#ff4799] hover:bg-[#ff4799]/10'
+                    : 'text-[#e2bdc7]/80 hover:text-white hover:bg-white/[0.06]'
                 }`}
               >
-                <span className="material-symbols-outlined text-base">{tab.icon}</span>
                 <span>{tab.label}</span>
               </button>
-            ))}
-          </nav>
-        </div>
+            );
+          })}
+        </nav>
 
-        {/* Action Zone with clean grouping & distinct dividers */}
-        <div className="flex items-center gap-4 flex-shrink-0">
-          {/* Wallet */}
+        {/* Action Cluster */}
+        <div className="flex items-center gap-3 flex-shrink-0">
+          {/* Wallet Button */}
           {isWalletConnected ? (
             <button
               onClick={onOpenWallet}
-              className="flex items-center gap-2.5 px-3.5 py-2 rounded-xl bg-[#1b122b] border border-[#ff4799]/25 hover:border-[#ff4799] transition-all text-xs font-mono text-[#eadef8] cursor-pointer"
+              className="flex items-center gap-2.5 px-3 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-[#ff4799]/40 transition-all text-xs font-mono text-[#eadef8] cursor-pointer"
             >
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
               <span>{profile.connectedWallet.address}</span>
-              <span className="text-[#feb700] font-semibold hidden md:inline ml-1 pl-2 border-l border-white/10">
-                {profile.connectedWallet.balance}
-              </span>
             </button>
           ) : (
             <button
               onClick={onOpenWallet}
-              className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-[#1b122b] border border-[#ff4799]/25 hover:border-[#feb700] transition-colors text-xs font-mono text-[#e2bdc7] hover:text-white cursor-pointer"
+              className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-[#feb700] transition-colors text-xs font-mono text-[#e2bdc7] hover:text-white cursor-pointer"
             >
-              <span className="material-symbols-outlined text-base text-[#feb700]">account_balance_wallet</span>
-              <span className="hidden sm:inline">CONNECT WALLET</span>
+              <span>CONNECT WALLET</span>
             </button>
           )}
 
-          {/* Vertical Separator */}
-          <div className="hidden sm:block h-6 w-[1px] bg-white/10" />
-
-          {/* Google User info or JOIN button */}
+          {/* User Status / Identity */}
           {googleUser ? (
-            <div className="flex items-center gap-3">
-              {/* Role badge */}
-              <span className="hidden xl:inline font-mono text-[10px] px-2.5 py-1 rounded-full bg-[#ff4799]/15 text-[#ffb0c9] border border-[#ff4799]/25 uppercase font-bold tracking-wider">
+            <div className="flex items-center gap-2 pl-2 border-l border-white/[0.08]">
+              <span className="hidden xl:inline font-mono text-[10px] px-2 py-0.5 rounded-md bg-[#ff4799]/15 text-[#ffb0c9] border border-[#ff4799]/20 uppercase font-semibold">
                 {ROLE_LABELS[googleUser.role]}
               </span>
-              {/* Avatar + profile link */}
+
               <button
                 onClick={() => onNavigate('join')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl font-display font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                className={`flex items-center gap-2 px-3 py-1.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
                   currentScreen === 'join'
                     ? 'bg-[#2e273a] text-white border border-[#ff4799]/40'
-                    : 'bg-[#feb700] hover:bg-[#ffc633] text-[#090414] shadow-md shadow-[#feb700]/25'
+                    : 'bg-white/[0.06] hover:bg-white/[0.1] text-white border border-white/[0.08]'
                 }`}
               >
                 {googleUser.avatar_url ? (
-                  <img src={googleUser.avatar_url} alt="" className="w-4 h-4 rounded-full ring-1 ring-black/40" />
-                ) : (
-                  <span className="material-symbols-outlined text-base">badge</span>
-                )}
+                  <img src={googleUser.avatar_url} alt="" className="w-4 h-4 rounded-full" />
+                ) : null}
                 <span>IDENTITY</span>
               </button>
-              {/* Logout */}
+
               <button
                 onClick={logout}
                 title="Logout"
-                className="p-2 rounded-xl bg-[#1b122b] border border-white/10 hover:border-[#ff4799]/40 text-[#a98891] hover:text-white transition-colors cursor-pointer"
+                className="p-1.5 rounded-xl bg-white/[0.04] border border-white/[0.08] hover:border-[#ff4799]/40 text-[#a98891] hover:text-white transition-colors cursor-pointer"
               >
-                <span className="material-symbols-outlined text-base">logout</span>
+                <span className="material-symbols-outlined text-sm">logout</span>
               </button>
             </div>
           ) : (
             <button
               onClick={handleJoinClick}
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider bg-[#feb700] hover:bg-[#ffc633] text-[#090414] shadow-md shadow-[#feb700]/25 transition-all cursor-pointer"
+              className="px-4 py-1.5 rounded-xl font-display font-bold text-xs uppercase tracking-wider bg-[#feb700] hover:bg-[#ffc633] text-[#090414] shadow-md shadow-[#feb700]/25 transition-all cursor-pointer"
             >
-              <span className="material-symbols-outlined text-base">login</span>
-              <span>JOIN NETWORK</span>
+              JOIN NETWORK
             </button>
           )}
         </div>
