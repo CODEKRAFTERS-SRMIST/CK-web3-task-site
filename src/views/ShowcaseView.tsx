@@ -14,7 +14,7 @@ interface ShowcaseViewProps {
 }
 
 export const ShowcaseView: React.FC<ShowcaseViewProps> = ({ profile, onOpenWallet, googleUser }) => {
-  const [projects, setProjects] = useState<ShowcaseProject[]>(getShowcaseProjects());
+  const [projects, setProjects] = useState<ShowcaseProject[]>([]);
   const [isSubmitOpen, setIsSubmitOpen] = useState(false);
   const [search, setSearch] = useState('');
 

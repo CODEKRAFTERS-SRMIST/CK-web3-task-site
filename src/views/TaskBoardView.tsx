@@ -44,8 +44,8 @@ export const TaskBoardView: React.FC<TaskBoardViewProps> = ({
   const canCreate = canDo(userRole, 'create_task');
   const canReview = canDo(userRole, 'review');
 
-  const [tasks, setTasks] = useState<GuildTask[]>(getGuildTasks());
-  const [submissions, setSubmissions] = useState<TaskSubmission[]>(getTaskSubmissions());
+  const [tasks, setTasks] = useState<GuildTask[]>([]);
+  const [submissions, setSubmissions] = useState<TaskSubmission[]>([]);
   const [selectedTrack, setSelectedTrack] = useState<DomainTrack | 'All'>('All');
   const [selectedDifficulty, setSelectedDifficulty] = useState<TaskDifficulty | 'All'>('All');
   const [selectedStatus, setSelectedStatus] = useState<TaskStatus | 'All'>('All');

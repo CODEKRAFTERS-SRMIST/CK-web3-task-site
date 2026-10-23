@@ -55,63 +55,7 @@ export const LeaderboardView: React.FC<LeaderboardViewProps> = ({ profile }) => 
       .catch(() => {});
   }, [profile.handle]);
 
-  const rawBuilders: Omit<RankedBuilder, 'rank'>[] = [
-    {
-      handle: 'alex.eth',
-      wallet: '0x8A12...E419',
-      domain: 'Solidity',
-      role: 'Core Dev',
-      xp: 2850,
-      badges: 14,
-    },
-    {
-      handle: 'elena.zk',
-      wallet: '0x1C49...33B8',
-      domain: 'ZK',
-      role: 'Campus Lead',
-      xp: 2400,
-      badges: 12,
-    },
-    {
-      handle: profile.handle,
-      wallet: profile.connectedWallet.address !== 'Not Connected' ? profile.connectedWallet.address : '0x71C8...39A4',
-      domain: (profile.domainInterest as DomainTrack) || 'Solidity',
-      role: profile.role,
-      xp: profile.xp,
-      badges: profile.badgesUnlocked,
-      isCurrentUser: true,
-    },
-    {
-      handle: 'devin.eth',
-      wallet: '0x5F11...991A',
-      domain: 'React',
-      role: 'Core Dev',
-      xp: 1950,
-      badges: 9,
-    },
-    {
-      handle: 'sarah.design',
-      wallet: '0x99A2...00F1',
-      domain: 'UI/UX',
-      role: 'Campus Lead',
-      xp: 1600,
-      badges: 8,
-    },
-    {
-      handle: 'rustacean.sol',
-      wallet: '8xKP...11a9',
-      domain: 'Rust',
-      role: 'Club Member',
-      xp: 1250,
-      badges: 6,
-    },
-  ];
-
-  const allBuilders: RankedBuilder[] = dbBuilders.length > 0
-    ? dbBuilders
-    : rawBuilders
-        .sort((a, b) => b.xp - a.xp)
-        .map((b, idx) => ({ ...b, rank: idx + 1 }));
+  const allBuilders: RankedBuilder[] = dbBuilders;
 
   const filteredBuilders = allBuilders.filter(
     (b) => selectedDomain === 'All' || b.domain === selectedDomain

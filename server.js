@@ -263,9 +263,9 @@ app.get('/api/tasks', async (req, res) => {
     const tasks = await sql`
       SELECT t.id, t.title, t.description, t.requirements, t.track, t.difficulty,
              t.xp_reward AS "xpReward", t.token_reward AS "tokenReward",
-             t.deadline::text, t.author_handle AS "authorLead", t.status,
+             t.deadline::text, t.author_lead AS "authorLead", t.status,
              (SELECT COUNT(*)::int FROM task_submissions s WHERE s.task_id = t.id) AS "submissionsCount"
-      FROM guild_tasks t
+      FROM tasks t
       ORDER BY t.created_at DESC
     `;
     res.json({ tasks });
@@ -282,11 +282,11 @@ app.post('/api/tasks', requireAuth, requireRole('lead', 'head', 'president'), as
     }
     const taskId = `task-${Date.now()}`;
     const [profile] = await sql`SELECT handle FROM profiles WHERE user_id = ${req.user.id}`;
-    const authorHandle = profile?.handle || req.user.full_name || req.user.email.split('@')[0];
+    const authorLead = profile?.handle || req.user.full_name || req.user.email.split('@')[0];
 
     await sql`
-      INSERT INTO guild_tasks (id, title, description, requirements, track, difficulty, xp_reward, token_reward, deadline, author_id, author_handle, status)
-      VALUES (${taskId}, ${title}, ${description}, ${requirements || []}, ${track}, ${difficulty}, ${Number(xpReward) || 250}, ${tokenReward || null}, ${deadline || null}, ${req.user.id}, ${authorHandle}, 'Open')
+      INSERT INTO tasks (id, title, description, requirements, track, difficulty, xp_reward, token_reward, deadline, author_lead, status)
+      VALUES (${taskId}, ${title}, ${description}, ${JSON.stringify(requirements || [])}::jsonb, ${track}, ${difficulty}, ${Number(xpReward) || 250}, ${tokenReward || null}, ${deadline || null}, ${authorLead}, 'Open')
     `;
     res.json({ ok: true, taskId });
   } catch (err) {
@@ -299,20 +299,20 @@ app.get('/api/tasks/submissions', requireAuth, async (req, res) => {
     const isReviewer = ['lead', 'head', 'president'].includes(req.user.role);
     const submissions = isReviewer
       ? await sql`
-          SELECT s.id, s.task_id AS "taskId", s.user_id AS "userId", s.handle,
-                 s.wallet_address AS "walletAddress", s.pr_url AS "prUrl",
-                 s.demo_url AS "demoUrl", s.notes, s.status, s.feedback,
+          SELECT s.id, s.task_id AS "taskId", s.builder_id AS "userId", s.builder_handle AS "handle",
+                 s.builder_wallet AS "walletAddress", s.github_pr_url AS "prUrl",
+                 s.demo_url AS "demoUrl", s.notes, s.status, s.reviewer_feedback AS "feedback",
                  s.submitted_at AS "submittedAt"
           FROM task_submissions s
           ORDER BY s.submitted_at DESC
         `
       : await sql`
-          SELECT s.id, s.task_id AS "taskId", s.user_id AS "userId", s.handle,
-                 s.wallet_address AS "walletAddress", s.pr_url AS "prUrl",
-                 s.demo_url AS "demoUrl", s.notes, s.status, s.feedback,
+          SELECT s.id, s.task_id AS "taskId", s.builder_id AS "userId", s.builder_handle AS "handle",
+                 s.builder_wallet AS "walletAddress", s.github_pr_url AS "prUrl",
+                 s.demo_url AS "demoUrl", s.notes, s.status, s.reviewer_feedback AS "feedback",
                  s.submitted_at AS "submittedAt"
           FROM task_submissions s
-          WHERE s.user_id = ${req.user.id}
+          WHERE s.builder_id = ${req.user.id}
           ORDER BY s.submitted_at DESC
         `;
     res.json({ submissions });
@@ -330,10 +330,10 @@ app.post('/api/tasks/:id/submit', requireAuth, async (req, res) => {
     const handle = profile?.handle || req.user.full_name || req.user.email.split('@')[0];
 
     await sql`
-      INSERT INTO task_submissions (id, task_id, user_id, handle, wallet_address, pr_url, demo_url, notes, status)
-      VALUES (${submissionId}, ${req.params.id}, ${req.user.id}, ${handle}, ${walletAddress || null}, ${prUrl}, ${demoUrl || null}, ${notes || null}, 'Pending')
+      INSERT INTO task_submissions (id, task_id, builder_id, builder_handle, builder_wallet, github_pr_url, demo_url, notes, status)
+      VALUES (${submissionId}, ${req.params.id}, ${req.user.id}, ${handle}, ${walletAddress || null}, ${prUrl}, ${demoUrl || null}, ${notes || null}, 'Submitted')
     `;
-    await sql`UPDATE guild_tasks SET status = 'Under Review' WHERE id = ${req.params.id} AND status = 'Open'`;
+    await sql`UPDATE tasks SET status = 'In Progress', submissions_count = submissions_count + 1 WHERE id = ${req.params.id}`;
     res.json({ ok: true, submissionId });
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -351,17 +351,17 @@ app.post('/api/tasks/submissions/:id/review', requireAuth, requireRole('lead', '
 
     await sql`
       UPDATE task_submissions
-      SET status = ${status}, feedback = ${feedback || null}, reviewed_by = ${req.user.id}, reviewed_at = now()
+      SET status = ${status}, reviewer_feedback = ${feedback || null}, reviewed_at = now()
       WHERE id = ${req.params.id}
     `;
 
     if (status === 'Approved') {
-      const [task] = await sql`SELECT xp_reward FROM guild_tasks WHERE id = ${sub.task_id}`;
+      const [task] = await sql`SELECT xp_reward FROM tasks WHERE id = ${sub.task_id}`;
       const xpBonus = task?.xp_reward || 250;
       await sql`
         UPDATE profiles
         SET xp = xp + ${xpBonus}, badges_unlocked = badges_unlocked + 1
-        WHERE user_id = ${sub.user_id}
+        WHERE user_id = ${sub.builder_id}
       `;
     }
     res.json({ ok: true, status });
