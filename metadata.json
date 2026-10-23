@@ -1,0 +1,6 @@
+{
+  "name": "CodeKrafters - Web3 Builder Guild",
+  "description": "Quest-driven platform for Web3 club members, leads, and developers to build real projects, earn verifiable credentials, and mint soulbound builder passports.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

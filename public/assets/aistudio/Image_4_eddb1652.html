@@ -1,0 +1,463 @@
+<!DOCTYPE html><html class="dark" lang="en"><head><meta charset="utf-8"><meta content="width=device-width, initial-scale=1.0" name="viewport"><meta content="web_blank" name="shell-type"><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"><link href="https://fonts.googleapis.com" rel="preconnect"><link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;family=Syne:wght@600;700;800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config = { darkMode: "class", theme: { extend: { "colors": { "on-error": "#690005", "surface": "#171022", "on-secondary-container": "#6b4b00", "error": "#ffb4ab", "surface-variant": "#393145", "surface-bright": "#3d364a", "on-secondary-fixed-variant": "#5e4200", "outline-variant": "#5a3f48", "on-tertiary-fixed": "#36003e", "on-error-container": "#ffdad6", "on-surface": "#eadef8", "on-surface-variant": "#e2bdc7", "surface-container-highest": "#393145", "secondary": "#ffdb9d", "primary-container": "#ff4799", "tertiary": "#fbabff", "primary-fixed": "#ffd9e3", "surface-tint": "#ffb0c9", "primary-fixed-dim": "#ffb0c9", "surface-container-low": "#1f182b", "on-secondary-fixed": "#271900", "surface-container-high": "#2e273a", "tertiary-container": "#e14ef6", "on-primary": "#640034", "inverse-surface": "#eadef8", "secondary-fixed-dim": "#ffba20", "primary": "#ffb0c9", "surface-container-lowest": "#110b1c", "on-tertiary-container": "#4d0059", "on-background": "#eadef8", "surface-container": "#231c2f", "background": "#171022", "error-container": "#93000a", "outline": "#a98891", "surface-dim": "#171022", "on-primary-fixed": "#3e001e", "tertiary-fixed-dim": "#fbabff", "on-primary-container": "#58002d", "secondary-fixed": "#ffdea8", "on-secondary": "#412d00", "on-primary-fixed-variant": "#8e004c", "inverse-on-surface": "#342d40", "tertiary-fixed": "#ffd6fd", "on-tertiary-fixed-variant": "#7c008e", "inverse-primary": "#b90066", "secondary-container": "#feb700", "on-tertiary": "#580065" }, "borderRadius": { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" }, "spacing": { "space-md": "1rem", "space-sm": "0.5rem", "margin-mobile": "1.25rem", "space-2xl": "4rem", "gutter": "1.5rem", "space-xl": "2.5rem", "space-xs": "0.25rem", "space-lg": "1.5rem", "margin": "3rem", "gutter-sm": "1rem" }, "fontFamily": { "headline-md": ["Syne"], "body-sm": ["Inter"], "label-mono-lg": ["JetBrains Mono"], "label-mono-sm": ["JetBrains Mono"], "headline-lg": ["Syne"], "body-md": ["Inter"], "label-mono-md": ["JetBrains Mono"], "display-hero": ["Syne"], "display-hero-mobile": ["Syne"], "headline-sm": ["Syne"], "headline-lg-mobile": ["Syne"], "body-lg": ["Inter"] }, "fontSize": { "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-sm": ["13px", { "lineHeight": "20px", "fontWeight": "400" }], "label-mono-lg": ["14px", { "lineHeight": "20px", "letterSpacing": "0.08em", "fontWeight": "600" }], "label-mono-sm": ["11px", { "lineHeight": "14px", "letterSpacing": "0.12em", "fontWeight": "500" }], "headline-lg": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }], "body-md": ["15px", { "lineHeight": "24px", "fontWeight": "400" }], "label-mono-md": ["12px", { "lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500" }], "display-hero": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.03em", "fontWeight": "800" }], "display-hero-mobile": ["36px", { "lineHeight": "44px", "letterSpacing": "-0.02em", "fontWeight": "800" }], "headline-sm": ["20px", { "lineHeight": "28px", "fontWeight": "600" }], "headline-lg-mobile": ["28px", { "lineHeight": "36px", "letterSpacing": "-0.01em", "fontWeight": "700" }], "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }] } } } };</script></head><body class="bg-background font-body-md text-body-md text-on-surface relative min-h-screen selection:bg-primary selection:text-on-primary"><!-- STITCH_SHADER_START:ANIMATION_3 class="fixed inset-0 w-full h-full pointer-events-none -z-10 opacity-70" -->
+<div class="fixed inset-0 w-full h-full pointer-events-none -z-10 opacity-70" style="display:block;">
+<canvas id="shader-canvas-ANIMATION_3" style="display:block;width:100%;height:100%"></canvas>
+<script>
+(function() {
+  const canvas = document.getElementById('shader-canvas-ANIMATION_3');
+
+  // Sync the WebGL drawing-buffer size with the CSS-driven layout size.
+  // This fires on initial layout and whenever the element is resized.
+  function syncSize() {
+    const w = canvas.clientWidth  || 1280;
+    const h = canvas.clientHeight || 720;
+    if (canvas.width !== w || canvas.height !== h) {
+      canvas.width  = w;
+      canvas.height = h;
+    }
+  }
+  if (typeof ResizeObserver !== 'undefined') {
+    new ResizeObserver(syncSize).observe(canvas);
+  }
+  syncSize();
+
+  const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+  if (!gl) return;
+  const vs = `attribute vec2 a_position;
+varying vec2 v_texCoord;
+void main() {
+  v_texCoord = a_position * 0.5 + 0.5;
+  gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+  const fs = `precision highp float;
+uniform vec2 u_resolution;
+uniform float u_time;
+uniform vec2 u_mouse;
+varying vec2 v_texCoord;
+
+// Pill function for rounded vertical slats
+float pill(vec2 p, vec2 b, float r) {
+    vec2 q = abs(p) - b + r;
+    return length(max(q, 0.0)) + min(max(q.x, q.y), 0.0) - r;
+}
+
+void main() {
+    vec2 st = gl_FragCoord.xy / u_resolution.xy;
+    vec2 aspectCoord = gl_FragCoord.xy;
+    
+    // Grid parameters for micro-slats
+    float slatW = 10.0;
+    float slatH = 26.0;
+    float gap = 3.5;
+    vec2 pitch = vec2(slatW + gap, slatH + gap);
+    
+    // Grid position
+    vec2 cell = floor(aspectCoord / pitch);
+    vec2 cellLocal = mod(aspectCoord, pitch) - pitch * 0.5;
+    
+    // MicroSlats wave simulation matching React Bits component
+    // Perspective wave and horizon depth
+    float normY = gl_FragCoord.y / u_resolution.y;
+    float normX = gl_FragCoord.x / u_resolution.x;
+    
+    // Mouse interaction / ripple
+    vec2 mouseNorm = u_mouse / u_resolution;
+    float distToMouse = length(vec2(normX - mouseNorm.x, (normY - mouseNorm.y) * (u_resolution.y / u_resolution.x)));
+    float mouseSplat = exp(-distToMouse * distToMouse * 35.0);
+    
+    // Swell wave harmonics
+    float t = u_time * 0.9;
+    vec2 world = vec2(cell.x * 0.055, cell.y * 0.04);
+    
+    // Directional heading angles
+    float wave1 = sin(world.x * 1.8 + world.y * 2.2 - t + sin(world.y * 0.5 + t * 0.4));
+    float wave2 = cos(world.x * 2.5 - world.y * 1.6 - t * 1.25);
+    float wave3 = sin((world.x + world.y) * 1.4 - t * 0.7);
+    
+    float waveHeight = (wave1 * 0.5 + wave2 * 0.35 + wave3 * 0.25);
+    waveHeight += mouseSplat * 1.2;
+    
+    float level = clamp(0.5 + 0.5 * waveHeight, 0.0, 1.0);
+    
+    // Slats pill dimensions & roundness
+    // Slats on right side and wave crests get brighter neon pink/magenta to orange/amber
+    vec2 halfSize = vec2(slatW * 0.46, slatH * 0.46 * mix(0.7, 1.15, level));
+    float radius = 0.75 * min(halfSize.x, halfSize.y);
+    float dist = pill(cellLocal, halfSize, radius);
+    float alpha = clamp(0.5 - dist * 1.2, 0.0, 1.0);
+    
+    // Palette: Base deep purple background, vibrant neon magenta/pink (#ff1a8c), glint orange (#ff8703)
+    vec3 deepDarkBg = vec3(0.04, 0.015, 0.08); // #0a0414
+    vec3 ambientPurple = vec3(0.12, 0.03, 0.22);
+    vec3 slatBaseColor = vec3(0.85, 0.08, 0.48); // Neon pink/magenta
+    vec3 glintOrange = vec3(1.0, 0.52, 0.02); // Glint warm gold/orange
+    vec3 highlightWhite = vec3(1.0, 0.92, 0.95);
+    
+    // Spatial gradient: brighter energetic wave on the top-right / right side matching reference
+    float spatialIntensity = smoothstep(-0.2, 1.1, normX * 0.85 + (1.0 - normY) * 0.35);
+    float waveCrest = smoothstep(0.45, 0.95, level);
+    
+    // Color mixing
+    vec3 slatCol = mix(slatBaseColor, glintOrange, pow(waveCrest, 1.5) * 0.85);
+    slatCol = mix(slatCol, highlightWhite, pow(waveCrest, 4.0) * 0.4);
+    
+    // Modulate slat intensity by spatial map and wave height
+    float slatBrightness = mix(0.12, 1.0, spatialIntensity) * mix(0.3, 1.25, level);
+    slatBrightness += mouseSplat * 0.8;
+    
+    // Background gradient: vignette from deep black-purple to ambient purple glow
+    vec3 bg = mix(deepDarkBg, ambientPurple, spatialIntensity * 0.45);
+    
+    // Final composite
+    vec3 finalColor = mix(bg, slatCol * slatBrightness, alpha * clamp(slatBrightness, 0.0, 1.0));
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+}`;
+  function cs(type, src) {
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src);
+    gl.compileShader(s);
+    return s;
+  }
+  const prog = gl.createProgram();
+  gl.attachShader(prog, cs(gl.VERTEX_SHADER, vs));
+  gl.attachShader(prog, cs(gl.FRAGMENT_SHADER, fs));
+  gl.linkProgram(prog);
+  gl.useProgram(prog);
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const pos = gl.getAttribLocation(prog, 'a_position');
+  gl.enableVertexAttribArray(pos);
+  gl.vertexAttribPointer(pos, 2, gl.FLOAT, false, 0, 0);
+  const uTime = gl.getUniformLocation(prog, 'u_time');
+  const uRes = gl.getUniformLocation(prog, 'u_resolution');
+  const uMouse = gl.getUniformLocation(prog, 'u_mouse');
+
+  // u_mouse is in pixel coordinates matching u_resolution (ShaderToy convention).
+  // Shaders that need normalized coords should use: u_mouse / u_resolution.
+  let mouse = { x: canvas.width / 2, y: canvas.height / 2 };
+  window.addEventListener('mousemove', (event) => {
+    const rect = canvas.getBoundingClientRect();
+    if (rect.width && rect.height) {
+      const nx = (event.clientX - rect.left) / rect.width;
+      const ny = 1.0 - (event.clientY - rect.top) / rect.height;
+      mouse.x = nx * canvas.width;
+      mouse.y = ny * canvas.height;
+    }
+  });
+
+  function render(t) {
+    if (typeof ResizeObserver === 'undefined') syncSize();
+    gl.viewport(0, 0, canvas.width, canvas.height);
+    if (uTime) gl.uniform1f(uTime, t * 0.001);
+    if (uRes) gl.uniform2f(uRes, canvas.width, canvas.height);
+    if (uMouse) gl.uniform2f(uMouse, mouse.x, mouse.y);
+    gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    requestAnimationFrame(render);
+  }
+  render(0);
+})();
+</script>
+</div>
+<!-- STITCH_SHADER_END:ANIMATION_3 --><main class="w-full min-h-screen flex items-center justify-center p-gutter"><div class="flex flex-col w-full max-w-5xl mx-auto px-space-md py-space-lg text-on-surface">
+<!-- Top Action Bar -->
+<div class="flex items-center justify-between w-full mb-space-xl">
+<a class="group flex items-center gap-space-xs px-space-md py-space-sm rounded-full bg-surface-container-low/80 backdrop-blur-md shadow-sm transition-all hover:bg-surface-container hover:shadow-md" href="#">
+<span class="material-symbols-outlined text-primary text-body-lg transition-transform group-hover:-translate-x-1">arrow_back</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider group-hover:text-on-surface">Return to Landing</span>
+</a>
+<div class="flex items-center gap-space-sm px-space-md py-space-xs rounded-full bg-surface-container-lowest/80 backdrop-blur-md">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-secondary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-secondary-container"></span>
+</span>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary tracking-widest uppercase">EIP-1193 Gateway v2.4</span>
+</div>
+</div>
+<!-- Main Cyber Modal Frame -->
+<div class="relative w-full rounded-3xl bg-surface-container-lowest/90 backdrop-blur-2xl shadow-2xl p-space-lg md:p-space-xl overflow-hidden">
+<!-- Ambient Neon Corner Blobs -->
+<div class="absolute -top-32 -left-32 w-80 h-80 rounded-full bg-primary-container/20 blur-3xl pointer-events-none"></div>
+<div class="absolute -bottom-32 -right-32 w-80 h-80 rounded-full bg-secondary-container/15 blur-3xl pointer-events-none"></div>
+<!-- Modal Header Section -->
+<div class="flex flex-col items-center text-center max-w-xl mx-auto mb-space-xl">
+<!-- Hexagonal Logo Node -->
+<div class="relative mb-space-md flex items-center justify-center">
+<div class="absolute inset-0 rounded-2xl bg-gradient-to-tr from-primary-container via-secondary-container to-tertiary-container blur-md opacity-40 animate-pulse"></div>
+<div class="relative w-16 h-16 rounded-2xl bg-surface-container-highest flex items-center justify-center shadow-lg">
+<svg class="w-10 h-10 text-secondary" fill="currentColor" viewBox="0 0 40 40">
+<polygon class="text-secondary-container" fill="none" points="20,2 36,11 36,29 20,38 4,29 4,11" stroke="currentColor" stroke-width="2.5"></polygon>
+<path d="M14 16 L20 12 L26 16 L26 24 L20 28 L14 24 Z" fill="currentColor" fill-opacity="0.15" stroke="currentColor" stroke-width="1.5"></path>
+<path d="M17 19 L20 17 L23 19 L23 21 L20 23 L17 21 Z" fill="currentColor"></path>
+</svg>
+</div>
+</div>
+<!-- Supertitle Chips -->
+<div class="flex items-center gap-space-xs mb-space-xs font-label-mono-sm text-label-mono-sm tracking-widest text-on-surface-variant uppercase">
+<span>Auth Node</span>
+<span class="text-primary">•</span>
+<span>Secure Enclave</span>
+<span class="text-primary">•</span>
+<span>Protocol v4</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-tight mb-space-xs">
+        Connect Your Web3 Wallet
+      </h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">
+        Select your Web3 provider to verify developer credentials, mint quest SBTs, and record on-chain builder telemetry.
+      </p>
+<!-- Simulation State Navigator -->
+<div class="mt-space-lg inline-flex p-1 rounded-xl bg-surface-container-high/80 backdrop-blur-md">
+<button class="state-tab-btn active px-space-md py-space-xs rounded-lg font-label-mono-sm text-label-mono-sm tracking-wider uppercase transition-all bg-primary-container text-on-primary font-semibold shadow-sm" id="tab-btn-disco" onclick="switchState('disconnected')">
+          1. Provider Pick
+        </button>
+<button class="state-tab-btn px-space-md py-space-xs rounded-lg font-label-mono-sm text-label-mono-sm tracking-wider uppercase transition-all text-on-surface-variant hover:text-on-surface" id="tab-btn-proc" onclick="switchState('connecting')">
+          2. Awaiting Sign
+        </button>
+<button class="state-tab-btn px-space-md py-space-xs rounded-lg font-label-mono-sm text-label-mono-sm tracking-wider uppercase transition-all text-on-surface-variant hover:text-on-surface" id="tab-btn-conn" onclick="switchState('connected')">
+          3. Authenticated
+        </button>
+</div>
+</div>
+<!-- STATE 1: Disconnected / Select Wallet View -->
+<div class="state-panel flex flex-col gap-space-md max-w-2xl mx-auto transition-opacity duration-300" id="state-disconnected">
+<!-- Wallet 1: MetaMask -->
+<div class="group relative rounded-2xl bg-surface-container-low/70 hover:bg-surface-container-high p-space-md transition-all duration-200 cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-0.5" onclick="initiateConnection('MetaMask')">
+<div class="flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md min-w-0">
+<!-- Hex Glass Icon Frame -->
+<div class="w-14 h-14 rounded-xl bg-surface-container-highest flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-secondary text-headline-md" style="font-variation-settings: 'FILL' 1;">electric_bolt</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">MetaMask</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary/15 text-secondary font-label-mono-sm text-label-mono-sm tracking-widest uppercase">Popular</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Connect with browser extension, hardware token, or mobile app</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="font-label-mono-md text-label-mono-md text-primary font-semibold group-hover:text-secondary transition-colors">Connect</span>
+<span class="material-symbols-outlined text-primary text-body-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Wallet 2: Phantom -->
+<div class="group relative rounded-2xl bg-surface-container-low/70 hover:bg-surface-container-high p-space-md transition-all duration-200 cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-0.5" onclick="initiateConnection('Phantom')">
+<div class="flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-14 h-14 rounded-xl bg-surface-container-highest flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-tertiary text-headline-md" style="font-variation-settings: 'FILL' 1;">token</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">Phantom</span>
+<span class="px-2 py-0.5 rounded-full bg-tertiary-container/30 text-tertiary font-label-mono-sm text-label-mono-sm tracking-widest uppercase">Multi-Chain</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Support for Solana, Ethereum &amp; Polygon networks</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="font-label-mono-md text-label-mono-md text-primary font-semibold group-hover:text-tertiary transition-colors">Connect</span>
+<span class="material-symbols-outlined text-primary text-body-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Wallet 3: WalletConnect -->
+<div class="group relative rounded-2xl bg-surface-container-low/70 hover:bg-surface-container-high p-space-md transition-all duration-200 cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-0.5" onclick="initiateConnection('WalletConnect')">
+<div class="flex items-center justify-between gap-space-md">
+<div class="flex items-center gap-space-md min-w-0">
+<div class="w-14 h-14 rounded-xl bg-surface-container-highest flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform">
+<span class="material-symbols-outlined text-primary text-headline-md" style="font-variation-settings: 'FILL' 1;">qr_code_scanner</span>
+</div>
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-space-xs flex-wrap">
+<span class="font-headline-sm text-headline-sm text-on-surface">WalletConnect</span>
+<span class="px-2 py-0.5 rounded-full bg-primary-container/20 text-primary font-label-mono-sm text-label-mono-sm tracking-widest uppercase">Instant QR</span>
+</div>
+<span class="font-body-sm text-body-sm text-on-surface-variant truncate">Scan with Rainbow, Trust, Zerion, or 350+ mobile wallets</span>
+</div>
+</div>
+<div class="flex items-center gap-space-xs flex-shrink-0">
+<span class="font-label-mono-md text-label-mono-md text-primary font-semibold group-hover:text-primary-fixed transition-colors">Scan QR</span>
+<span class="material-symbols-outlined text-primary text-body-lg group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Quick Helper -->
+<div class="flex items-center justify-between px-space-sm pt-space-xs text-on-surface-variant">
+<span class="font-label-mono-sm text-label-mono-sm">New to Web3?</span>
+<a class="font-label-mono-sm text-label-mono-sm text-secondary hover:underline flex items-center gap-1" href="#">
+<span>Read Wallet Setup Handbook</span>
+<span class="material-symbols-outlined text-sm">open_in_new</span>
+</a>
+</div>
+</div>
+<!-- STATE 2: Awaiting Signature / Connecting Screen -->
+<div class="state-panel hidden flex-col items-center justify-center max-w-lg mx-auto py-space-xl text-center" id="state-connecting">
+<!-- Pulsing Neon Radar Element -->
+<div class="relative w-32 h-32 mb-space-lg flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border-2 border-primary animate-ping opacity-30"></div>
+<div class="absolute inset-2 rounded-full border border-secondary animate-pulse opacity-40"></div>
+<div class="relative w-20 h-20 rounded-full bg-surface-container-highest flex items-center justify-center shadow-xl">
+<span class="material-symbols-outlined text-secondary text-headline-lg animate-spin" id="connecting-icon" style="animation-duration: 3s;">sync</span>
+</div>
+</div>
+<div class="inline-flex items-center gap-space-xs px-space-sm py-1 rounded-full bg-secondary-container/20 text-secondary mb-space-sm font-label-mono-sm text-label-mono-sm uppercase tracking-wider">
+<span class="material-symbols-outlined text-sm">hourglass_top</span>
+<span>Awaiting Client Confirmation</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-space-xs" id="connecting-title">
+        Approve in MetaMask
+      </h2>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-lg max-w-sm">
+        Please check your browser extension to verify signature authenticity and link your developer identity.
+      </p>
+<!-- Progress Track -->
+<div class="w-full bg-surface-container rounded-full h-1.5 mb-space-xl overflow-hidden">
+<div class="bg-gradient-to-r from-secondary-container via-primary-container to-tertiary-container h-full w-2/3 animate-pulse rounded-full"></div>
+</div>
+<div class="flex items-center gap-space-md">
+<button class="px-space-lg py-space-sm rounded-xl bg-surface-container-high text-on-surface font-label-mono-sm text-label-mono-sm tracking-wider uppercase hover:bg-surface-variant transition-colors" onclick="switchState('disconnected')">
+          Cancel Request
+        </button>
+<button class="px-space-lg py-space-sm rounded-xl bg-secondary-container text-on-secondary-container font-label-mono-sm text-label-mono-sm font-semibold tracking-wider uppercase shadow-lg shadow-secondary-container/20 hover:brightness-110 transition-all" onclick="switchState('connected')">
+          Simulate Approval
+        </button>
+</div>
+</div>
+<!-- STATE 3: Connected Guild Dashboard Summary -->
+<div class="state-panel hidden flex-col max-w-2xl mx-auto" id="state-connected">
+<!-- Active Account Badge Hub -->
+<div class="rounded-2xl bg-surface-container-low p-space-lg mb-space-md relative overflow-hidden shadow-lg">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-space-md mb-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-14 h-14 rounded-2xl bg-gradient-to-tr from-primary-container to-secondary-container p-0.5 flex items-center justify-center shadow-md">
+<div class="w-full h-full bg-surface-container-lowest rounded-[14px] flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-headline-sm">verified_user</span>
+</div>
+</div>
+<div>
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-sm text-headline-sm text-on-surface">0x71C8...39A4</span>
+<button class="text-on-surface-variant hover:text-primary transition-colors" onclick="navigator.clipboard?.writeText('0x71C8a9d187B012F4e998B9d8E714B924338439A4')" title="Copy Address">
+<span class="material-symbols-outlined text-sm">content_copy</span>
+</button>
+</div>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant tracking-wider uppercase flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+<span>Ethereum Mainnet (Chain ID: 1)</span>
+</span>
+</div>
+</div>
+<button class="self-start sm:self-auto px-space-md py-space-xs rounded-lg bg-surface-container-highest text-error font-label-mono-sm text-label-mono-sm tracking-wider uppercase hover:bg-error-container hover:text-on-error transition-colors flex items-center gap-1" onclick="switchState('disconnected')">
+<span class="material-symbols-outlined text-sm">power_settings_new</span>
+<span>Disconnect</span>
+</button>
+</div>
+<!-- Metric Bento Array -->
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-space-sm">
+<div class="bg-surface-container/70 rounded-xl p-space-md flex flex-col justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider">Balance</span>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">1.428</span>
+<span class="font-label-mono-sm text-label-mono-sm text-secondary font-semibold">ETH</span>
+</div>
+</div>
+<div class="bg-surface-container/70 rounded-xl p-space-md flex flex-col justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider">Guild XP</span>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-primary">3,450</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">XP</span>
+</div>
+</div>
+<div class="bg-surface-container/70 rounded-xl p-space-md flex flex-col justify-between">
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant uppercase tracking-wider">SBT Badges</span>
+<div class="mt-2 flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-tertiary">07</span>
+<span class="font-label-mono-sm text-label-mono-sm text-on-surface-variant">Unlocked</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Navigation Row -->
+<div class="flex flex-col sm:flex-row items-center gap-space-sm">
+<a class="w-full sm:flex-1 py-space-md px-space-lg rounded-xl bg-secondary-container text-on-secondary-container text-center font-headline-sm text-headline-sm hover:brightness-110 shadow-lg shadow-secondary-container/20 transition-all flex items-center justify-center gap-2" href="#">
+<span>Enter Builder Network</span>
+<span class="material-symbols-outlined">rocket_launch</span>
+</a>
+<a class="w-full sm:w-auto py-space-md px-space-lg rounded-xl bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors font-label-mono-sm text-label-mono-sm uppercase tracking-wider text-center flex items-center justify-center gap-2" href="#">
+<span>View Quests</span>
+<span class="material-symbols-outlined text-sm">explore</span>
+</a>
+</div>
+</div>
+<!-- Security & Transparency Enclave Notice -->
+<div class="mt-space-xl pt-space-md max-w-2xl mx-auto flex flex-col sm:flex-row items-start sm:items-center justify-between gap-space-md text-on-surface-variant/80">
+<div class="flex items-center gap-space-sm">
+<span class="material-symbols-outlined text-secondary text-headline-sm" style="font-variation-settings: 'FILL' 1;">verified</span>
+<p class="font-body-sm text-body-sm">
+          CodeKrafters operates via read-only EIP-1193 calls. We never request private keys or asset transfers.
+        </p>
+</div>
+<div class="flex items-center gap-space-md flex-shrink-0 font-label-mono-sm text-label-mono-sm uppercase tracking-wider">
+<a class="hover:text-primary transition-colors" href="#">Privacy</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#">Terms</a>
+</div>
+</div>
+</div>
+<!-- Decorative Cryptographic Console Status Ribbon -->
+<div class="mt-space-lg flex flex-wrap items-center justify-between gap-space-sm px-space-md font-label-mono-sm text-label-mono-sm text-on-surface-variant/60">
+<div class="flex items-center gap-space-xs">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span>RPC: CLOUD-MAINNET-01 // LATENCY: 22MS</span>
+</div>
+<div class="flex items-center gap-space-xs">
+<span>NONCE: #98432-XK</span>
+<span>•</span>
+<span>VERIFIER: 0x93FA...CODE</span>
+</div>
+</div>
+</div>
+<!-- Interactive Tab & Simulation Logic -->
+<script>
+  function switchState(targetState) {
+    // Hide all state containers
+    document.querySelectorAll('.state-panel').forEach(panel => {
+      panel.classList.add('hidden');
+    });
+
+    // Reset button states
+    document.querySelectorAll('.state-tab-btn').forEach(btn => {
+      btn.className = 'state-tab-btn px-space-md py-space-xs rounded-lg font-label-mono-sm text-label-mono-sm tracking-wider uppercase transition-all text-on-surface-variant hover:text-on-surface';
+    });
+
+    // Activate selected container and tab button
+    const targetPanel = document.getElementById('state-' + targetState);
+    if (targetPanel) {
+      targetPanel.classList.remove('hidden');
+    }
+
+    if (targetState === 'disconnected') {
+      const btn = document.getElementById('tab-btn-disco');
+      if (btn) btn.className = 'state-tab-btn px-space-md py-space-xs rounded-lg font-label-mono-sm text-label-mono-sm tracking-wider uppercase transition-all bg-primary-container text-on-primary font-semibold shadow-sm';
+    } else if (targetState === 'connecting') {
+      const btn = document.getElementById('tab-btn-proc');
+      if (btn) btn.className = 'state-tab-btn px-space-md py-space-xs rounded-lg font-label-mono-sm text-label-mono-sm tracking-wider uppercase transition-all bg-secondary-container text-on-secondary-container font-semibold shadow-sm';
+    } else if (targetState === 'connected') {
+      const btn = document.getElementById('tab-btn-conn');
+      if (btn) btn.className = 'state-tab-btn px-space-md py-space-xs rounded-lg font-label-mono-sm text-label-mono-sm tracking-wider uppercase transition-all bg-tertiary-container text-on-surface font-semibold shadow-sm';
+    }
+  }
+
+  function initiateConnection(providerName) {
+    const titleEl = document.getElementById('connecting-title');
+    if (titleEl) {
+      titleEl.innerText = 'Approve in ' + providerName;
+    }
+    switchState('connecting');
+  }
+</script></main></body></html>

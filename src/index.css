@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Syne", -apple-system, sans-serif;
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --color-surface: #171022;
+  --color-surface-dim: #171022;
+  --color-surface-bright: #3d364a;
+  --color-surface-lowest: #110b1c;
+  --color-surface-low: #1f182b;
+  --color-surface-container: #231c2f;
+  --color-surface-high: #2e273a;
+  --color-surface-highest: #393145;
+  --color-primary: #ffb0c9;
+  --color-primary-neon: #ff4799;
+  --color-secondary: #ffdb9d;
+  --color-secondary-gold: #feb700;
+  --color-tertiary: #fbabff;
+  --color-tertiary-container: #e14ef6;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: #090414;
+    font-family: var(--font-sans);
+  }
+  
+  body {
+    background-color: #090414;
+    color: #eadef8;
+    overflow-x: hidden;
+  }
+}
+
+/* Glass & Cyberpunk styling utilities */
+.glass-panel {
+  background: rgba(27, 18, 43, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 71, 153, 0.12);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(35, 23, 56, 0.85);
+  border-color: rgba(255, 71, 153, 0.28);
+  box-shadow: 0 10px 30px -10px rgba(255, 71, 153, 0.15);
+}
+
+.gold-glow {
+  box-shadow: 0 0 25px rgba(254, 183, 0, 0.35);
+}
+
+.pink-glow {
+  box-shadow: 0 0 25px rgba(255, 71, 153, 0.35);
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #110b1c;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #393145;
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a3f48;
+}
