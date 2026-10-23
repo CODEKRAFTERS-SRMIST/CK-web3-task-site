@@ -18,8 +18,6 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
   googleUser,
 }) => {
   const [saveToast, setSaveToast] = useState<string | null>(null);
-  const [showMintModal, setShowMintModal] = useState<boolean>(false);
-  const [isMinting, setIsMinting] = useState<boolean>(false);
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
 
@@ -35,22 +33,13 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
     setProfile((prev) => ({ ...prev, discordHandle: e.target.value }));
   };
 
-  const toggleGithub = () => {
-    setProfile((prev) => {
-      const nextStatus = !prev.githubConnected;
-      return {
-        ...prev,
-        githubConnected: nextStatus,
-        githubUsername: nextStatus ? 'satoshi-builder' : '',
-        xp: nextStatus ? prev.xp + 150 : prev.xp - 150,
-      };
-    });
-    setSaveToast(
-      profile.githubConnected
-        ? 'GitHub account unlinked'
-        : 'GitHub linked! +150 XP Developer Proof awarded'
-    );
-    setTimeout(() => setSaveToast(null), 3000);
+  const handleGithubUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const username = e.target.value.trim();
+    setProfile((prev) => ({
+      ...prev,
+      githubUsername: username,
+      githubConnected: Boolean(username),
+    }));
   };
 
   const handleSaveDraft = async () => {
@@ -61,18 +50,20 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
     setTimeout(() => setSaveToast(null), 3000);
   };
 
-  const handleMintPassport = () => {
-    setIsMinting(true);
-    setShowMintModal(true);
-    setTimeout(() => {
-      setIsMinting(false);
-      setProfile((prev) => ({
-        ...prev,
-        isMinted: true,
-        badgesUnlocked: prev.badgesUnlocked + 1,
-        xp: prev.xp + 300,
-      }));
-    }, 2200);
+  const handleSaveAndContinue = async () => {
+    setIsSaving(true);
+    const ok = await saveProfile(profile);
+    setIsSaving(false);
+    if (ok) {
+      setSaveToast('Profile anchored & saved ✓');
+      setTimeout(() => {
+        setSaveToast(null);
+        onNavigate('tasks');
+      }, 1000);
+    } else {
+      setSaveToast('Save failed — try again');
+      setTimeout(() => setSaveToast(null), 3000);
+    }
   };
 
   return (
@@ -465,23 +456,19 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
                     </span>
                   </div>
                   <p className="font-sans text-xs text-[#e2bdc7]/80 leading-relaxed mb-4">
-                    Verify on-chain dev history and PRs to claim Level 2 status automatically.
+                    Verify dev history and PRs across repositories for builder proof.
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={toggleGithub}
-                  className={`w-full py-2.5 px-4 rounded-xl font-mono text-xs uppercase tracking-wider transition-all flex items-center justify-center gap-2 cursor-pointer ${
-                    profile.githubConnected
-                      ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 font-semibold'
-                      : 'bg-[#231c2f] text-white hover:bg-[#2e273a] border border-white/10'
-                  }`}
-                >
-                  <span className="material-symbols-outlined text-sm">
-                    {profile.githubConnected ? 'check_circle' : 'link'}
-                  </span>
-                  <span>{profile.githubConnected ? 'GITHUB LINKED (+150 XP)' : 'CONNECT GITHUB'}</span>
-                </button>
+                <div className="relative flex items-center">
+                  <span className="absolute left-3.5 font-mono text-xs text-[#feb700]">gh/</span>
+                  <input
+                    type="text"
+                    value={profile.githubUsername || ''}
+                    onChange={handleGithubUsernameChange}
+                    placeholder="your-github-username"
+                    className="w-full pl-10 pr-3.5 py-2.5 rounded-xl bg-[#1f182b] border border-[#ff4799]/30 focus:border-[#ff4799] focus:outline-none font-mono text-xs text-white"
+                  />
+                </div>
               </div>
 
               {/* Discord / Telegram Card */}
@@ -690,10 +677,11 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
           </button>
           <button
             type="button"
-            onClick={handleMintPassport}
-            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#feb700] hover:bg-[#ffc633] text-[#090414] font-display font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#feb700]/30 transition-all cursor-pointer"
+            onClick={handleSaveAndContinue}
+            disabled={isSaving}
+            className="flex-1 sm:flex-none flex items-center justify-center gap-2 px-8 py-3 rounded-xl bg-[#feb700] hover:bg-[#ffc633] text-[#090414] font-display font-bold text-xs uppercase tracking-wider shadow-lg shadow-[#feb700]/30 transition-all cursor-pointer disabled:opacity-50"
           >
-            <span>{profile.isMinted ? 'VIEW ON-CHAIN PASSPORT' : 'CONTINUE TO PASSPORT'}</span>
+            <span>{isSaving ? 'SAVING...' : 'SAVE & VIEW TASKS'}</span>
             <span className="material-symbols-outlined text-sm font-bold">arrow_forward</span>
           </button>
         </div>
@@ -704,84 +692,6 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
         <div className="fixed bottom-24 right-8 z-50 px-5 py-3 rounded-xl bg-[#110b1c] border border-[#feb700] text-[#feb700] font-mono text-xs shadow-2xl flex items-center gap-2 animate-bounce">
           <span className="material-symbols-outlined text-sm">verified</span>
           <span>{saveToast}</span>
-        </div>
-      )}
-
-      {/* On-Chain Passport Mint Modal */}
-      {showMintModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
-          <div className="relative w-full max-w-lg rounded-3xl bg-[#110b1c] border border-[#ff4799]/40 p-8 text-center shadow-2xl">
-            {isMinting ? (
-              <div className="py-8 space-y-6">
-                <div className="relative w-20 h-20 mx-auto flex items-center justify-center">
-                  <div className="absolute inset-0 rounded-full border-2 border-[#feb700] animate-ping opacity-40" />
-                  <span className="material-symbols-outlined text-4xl text-[#feb700] animate-spin">
-                    sync
-                  </span>
-                </div>
-                <h3 className="font-display font-bold text-2xl text-white">
-                  Minting Soulbound Passport...
-                </h3>
-                <p className="font-mono text-xs text-[#e2bdc7]">
-                  Anchoring cryptographic identity to Sepolia testnet enclave (ERC-3643).
-                </p>
-              </div>
-            ) : (
-              <div className="space-y-6">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-tr from-[#feb700] to-[#ff4799] p-0.5 mx-auto">
-                  <div className="w-full h-full bg-[#110b1c] rounded-[14px] flex items-center justify-center">
-                    <span className="material-symbols-outlined text-3xl text-[#feb700]">
-                      military_tech
-                    </span>
-                  </div>
-                </div>
-                <div>
-                  <span className="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-400 font-mono text-xs font-bold uppercase tracking-wider">
-                    MINT SUCCESSFUL
-                  </span>
-                  <h3 className="font-display font-extrabold text-2xl text-white mt-2">
-                    Builder Passport #48192-S1 Active!
-                  </h3>
-                  <p className="font-sans text-xs text-[#e2bdc7] mt-1">
-                    Your on-chain developer reputation is anchored. +300 XP awarded to @{profile.handle}.
-                  </p>
-                </div>
-
-                <div className="p-4 rounded-xl bg-[#1f182b] border border-white/5 font-mono text-xs text-left space-y-2">
-                  <div className="flex justify-between">
-                    <span className="text-[#a98891]">Tx Hash:</span>
-                    <span className="text-[#feb700]">0x93FA...4b82</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#a98891]">Guild Role:</span>
-                    <span className="text-white">{ROLE_LABELS[profile.role] || 'Web3 Builder'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-[#a98891]">Total Guild XP:</span>
-                    <span className="text-[#ff4799] font-bold">{profile.xp} XP</span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => setShowMintModal(false)}
-                    className="flex-1 py-3 rounded-xl bg-[#2e273a] text-white font-mono text-xs uppercase tracking-wider hover:bg-[#393145] transition-colors cursor-pointer"
-                  >
-                    Close
-                  </button>
-                  <button
-                    onClick={() => {
-                      setShowMintModal(false);
-                      onNavigate('landing');
-                    }}
-                    className="flex-1 py-3 rounded-xl bg-[#feb700] text-[#090414] font-display font-bold text-xs uppercase tracking-wider hover:brightness-110 shadow-lg shadow-[#feb700]/25 transition-all cursor-pointer"
-                  >
-                    Return to Home →
-                  </button>
-                </div>
-              </div>
-            )}
-          </div>
         </div>
       )}
     </div>
