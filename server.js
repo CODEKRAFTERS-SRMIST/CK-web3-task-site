@@ -20,8 +20,12 @@ const sql = neon(process.env.NEON_DATABASE_URL);
 const SESSION_SECRET = process.env.SESSION_SECRET || 'dev-secret-change-in-prod';
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-const APP_URL = process.env.APP_URL || 'http://localhost:3000';
-const CALLBACK_URL = `${APP_URL}/api/auth/callback`;
+const getCallbackUrl = (req) => {
+  const host = req ? (req.headers['x-forwarded-host'] || req.headers.host) : null;
+  const proto = req ? (req.headers['x-forwarded-proto'] || 'https') : 'https';
+  const base = process.env.APP_URL || (host ? `${proto}://${host}` : 'http://localhost:3000');
+  return `${base}/api/auth/callback`;
+};
 
 // ─── Cookie helpers ───────────────────────────────────────────────────────────
 function signCookie(userId) {
@@ -71,9 +75,10 @@ function requireRole(...roles) {
 
 // ─── Google OAuth ─────────────────────────────────────────────────────────────
 app.get('/api/auth/google', (req, res) => {
+  const redirectUri = getCallbackUrl(req);
   const params = new URLSearchParams({
     client_id: GOOGLE_CLIENT_ID,
-    redirect_uri: CALLBACK_URL,
+    redirect_uri: redirectUri,
     response_type: 'code',
     scope: 'openid email profile',
     access_type: 'online',
@@ -84,6 +89,7 @@ app.get('/api/auth/google', (req, res) => {
 app.get('/api/auth/callback', async (req, res) => {
   const { code } = req.query;
   if (!code) return res.status(400).json({ error: 'No code' });
+  const redirectUri = getCallbackUrl(req);
 
   // Exchange code for tokens
   const tokenRes = await fetch('https://oauth2.googleapis.com/token', {
@@ -93,7 +99,7 @@ app.get('/api/auth/callback', async (req, res) => {
       code,
       client_id: GOOGLE_CLIENT_ID,
       client_secret: GOOGLE_CLIENT_SECRET,
-      redirect_uri: CALLBACK_URL,
+      redirect_uri: redirectUri,
       grant_type: 'authorization_code',
     }),
   });
@@ -126,7 +132,8 @@ app.get('/api/auth/callback', async (req, res) => {
   `;
 
   const cookie = signCookie(info.sub);
-  res.setHeader('Set-Cookie', `ck_session=${cookie}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 3600}`);
+  const isSecure = process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
+  res.setHeader('Set-Cookie', `ck_session=${cookie}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${7 * 24 * 3600}${isSecure ? '; Secure' : ''}`);
   res.redirect('/?loggedIn=1');
 });
 
@@ -447,6 +454,10 @@ app.get('*', (req, res) => {
 });
 
 const PORT = process.env.PORT || 3001;
-createServer(app).listen(PORT, () => {
-  console.log(`CodeKrafters API running on :${PORT}`);
-});
+if (!process.env.VERCEL) {
+  createServer(app).listen(PORT, () => {
+    console.log(`CodeKrafters API running on :${PORT}`);
+  });
+}
+
+export default app;

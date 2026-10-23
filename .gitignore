@@ -9,3 +9,4 @@ coverage/
 .agents/
 .code-review-graph/
 
+.aistudio/
