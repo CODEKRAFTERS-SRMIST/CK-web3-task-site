@@ -231,8 +231,9 @@ export const ShowcaseView: React.FC<ShowcaseViewProps> = ({ profile, onOpenWalle
                   href={proj.githubUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="text-[#ff4799] hover:underline flex items-center gap-1 font-semibold"
+                  className="text-[#ff4799] hover:underline flex items-center gap-1.5 font-semibold"
                 >
+                  <img src="/assets/icons/github.svg" alt="GitHub" className="w-3.5 h-3.5 object-contain text-white" />
                   <span>GitHub Repository</span>
                   <span className="material-symbols-outlined text-xs">open_in_new</span>
                 </a>

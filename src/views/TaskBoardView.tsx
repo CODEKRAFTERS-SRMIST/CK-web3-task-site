@@ -768,13 +768,16 @@ export const TaskBoardView: React.FC<TaskBoardViewProps> = ({
                         </span>
                       </div>
 
-                      <div className="text-[11px] text-[#e2bdc7]">
-                        <span className="text-[#a98891]">PR: </span>
+                      <div className="text-[11px] text-[#e2bdc7] flex items-center gap-1.5 flex-wrap">
+                        <span className="text-[#a98891] flex items-center gap-1">
+                          <img src="/assets/icons/github.svg" alt="GitHub" className="w-3 h-3 object-contain inline-block text-white" />
+                          PR:
+                        </span>
                         <a
                           href={sub.githubPrUrl}
                           target="_blank"
                           rel="noreferrer"
-                          className="text-[#ff4799] underline"
+                          className="text-[#ff4799] underline truncate max-w-xs"
                         >
                           {sub.githubPrUrl}
                         </a>

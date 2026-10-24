@@ -61,6 +61,11 @@ export const LandingView: React.FC<LandingViewProps> = ({
     <div className="w-full min-h-[calc(100vh-140px)] flex flex-col justify-between max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-14 relative z-10">
       {/* Hero Section */}
       <div className="max-w-4xl pt-4 sm:pt-8 mb-12 sm:mb-16">
+        <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 rounded-full bg-[#1f182b]/80 border border-[#ff4799]/30 mb-6 backdrop-blur-md shadow-sm">
+          <img src="/logo.png" alt="CodeKrafters" className="w-5 h-5 object-contain" />
+          <span className="font-mono text-xs font-semibold text-[#feb700] uppercase tracking-wider">CODEKRAFTERS GUILD PROTOCOL</span>
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+        </div>
         <h1 className="font-display font-extrabold text-4xl sm:text-6xl lg:text-[76px] leading-[1.08] tracking-tight text-white mb-6">
           Build, Learn and
           <br />

@@ -180,8 +180,8 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-14 h-14 rounded-xl bg-[#393145] flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform border border-white/5">
-                      <span className="material-symbols-outlined text-[#feb700] text-2xl">electric_bolt</span>
+                    <div className="w-14 h-14 rounded-xl bg-[#2a2238] flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform border border-white/5 p-2.5">
+                      <img src="/assets/icons/metamask.svg" alt="MetaMask" className="w-full h-full object-contain" />
                     </div>
                     <div className="flex flex-col min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -206,42 +206,6 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
                 </div>
               </div>
 
-              {/* Coinbase / Browser EVM Card */}
-              <div
-                onClick={() => handleConnect('Coinbase / Browser EVM')}
-                role="button"
-                tabIndex={0}
-                onKeyDown={(e) => e.key === 'Enter' && handleConnect('Coinbase / Browser EVM')}
-                className="group relative rounded-2xl bg-[#1f182b]/70 hover:bg-[#2e273a] border border-[#ff4799]/15 hover:border-[#ff4799]/50 p-4 sm:p-5 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-0.5"
-              >
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-14 h-14 rounded-xl bg-[#393145] flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform border border-white/5">
-                      <span className="material-symbols-outlined text-[#ff4799] text-2xl">account_balance</span>
-                    </div>
-                    <div className="flex flex-col min-w-0">
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-display font-bold text-lg text-white">Coinbase / Injected EVM</span>
-                        <span className="px-2 py-0.5 rounded-full bg-[#ff4799]/20 text-[#ffb0c9] font-mono text-[10px] tracking-widest uppercase font-semibold">
-                          SMART WALLET / BRAVE / RABBY
-                        </span>
-                      </div>
-                      <span className="font-sans text-xs sm:text-sm text-[#e2bdc7]/80 truncate">
-                        Direct connection via window.ethereum EIP-1193 standard
-                      </span>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-1.5 flex-shrink-0">
-                    <span className="font-mono text-xs text-[#ffb0c9] font-semibold group-hover:text-white transition-colors">
-                      Connect
-                    </span>
-                    <span className="material-symbols-outlined text-[#ffb0c9] text-base group-hover:translate-x-1 transition-transform">
-                      arrow_forward
-                    </span>
-                  </div>
-                </div>
-              </div>
-
               {/* Phantom (Solana) Card */}
               <div
                 onClick={() => handleConnect('Phantom')}
@@ -252,8 +216,8 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
               >
                 <div className="flex items-center justify-between gap-4">
                   <div className="flex items-center gap-4 min-w-0">
-                    <div className="w-14 h-14 rounded-xl bg-[#393145] flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform border border-white/5">
-                      <span className="material-symbols-outlined text-[#fbabff] text-2xl">token</span>
+                    <div className="w-14 h-14 rounded-xl bg-[#2a2238] flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform border border-white/5 p-2.5">
+                      <img src="/assets/icons/phantom.svg" alt="Phantom" className="w-full h-full object-contain rounded-md" />
                     </div>
                     <div className="flex flex-col min-w-0">
                       <div className="flex items-center gap-2 flex-wrap">
@@ -269,6 +233,78 @@ export const ConnectWalletModal: React.FC<ConnectWalletModalProps> = ({
                   </div>
                   <div className="flex items-center gap-1.5 flex-shrink-0">
                     <span className="font-mono text-xs text-[#ffb0c9] font-semibold group-hover:text-[#fbabff] transition-colors">
+                      Connect
+                    </span>
+                    <span className="material-symbols-outlined text-[#ffb0c9] text-base group-hover:translate-x-1 transition-transform">
+                      arrow_forward
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* WalletConnect Card */}
+              <div
+                onClick={() => handleConnect('WalletConnect')}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && handleConnect('WalletConnect')}
+                className="group relative rounded-2xl bg-[#1f182b]/70 hover:bg-[#2e273a] border border-[#ff4799]/15 hover:border-[#3396ff]/50 p-4 sm:p-5 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-0.5"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-14 h-14 rounded-xl bg-[#2a2238] flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform border border-white/5 p-2.5">
+                      <img src="/assets/icons/walletconnect.svg" alt="WalletConnect" className="w-full h-full object-contain" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-display font-bold text-lg text-white">WalletConnect</span>
+                        <span className="px-2 py-0.5 rounded-full bg-[#3396ff]/20 text-[#3396ff] font-mono text-[10px] tracking-widest uppercase font-semibold">
+                          QR / UNIVERSAL
+                        </span>
+                      </div>
+                      <span className="font-sans text-xs sm:text-sm text-[#e2bdc7]/80 truncate">
+                        Connect mobile or hardware wallets via WalletConnect bridge
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    <span className="font-mono text-xs text-[#ffb0c9] font-semibold group-hover:text-[#3396ff] transition-colors">
+                      Connect
+                    </span>
+                    <span className="material-symbols-outlined text-[#ffb0c9] text-base group-hover:translate-x-1 transition-transform">
+                      arrow_forward
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Coinbase / Browser EVM Card */}
+              <div
+                onClick={() => handleConnect('Coinbase / Browser EVM')}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => e.key === 'Enter' && handleConnect('Coinbase / Browser EVM')}
+                className="group relative rounded-2xl bg-[#1f182b]/70 hover:bg-[#2e273a] border border-[#ff4799]/15 hover:border-[#ff4799]/50 p-4 sm:p-5 transition-all duration-200 cursor-pointer shadow-sm hover:shadow-xl hover:-translate-y-0.5"
+              >
+                <div className="flex items-center justify-between gap-4">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="w-14 h-14 rounded-xl bg-[#2a2238] flex-shrink-0 flex items-center justify-center shadow-inner group-hover:scale-105 transition-transform border border-white/5 p-3 text-[#0052ff]">
+                      <img src="/assets/icons/coinbase.svg" alt="Coinbase" className="w-full h-full object-contain filter invert opacity-90" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <span className="font-display font-bold text-lg text-white">Coinbase / Injected EVM</span>
+                        <span className="px-2 py-0.5 rounded-full bg-[#ff4799]/20 text-[#ffb0c9] font-mono text-[10px] tracking-widest uppercase font-semibold">
+                          SMART WALLET / BRAVE / RABBY
+                        </span>
+                      </div>
+                      <span className="font-sans text-xs sm:text-sm text-[#e2bdc7]/80 truncate">
+                        Direct connection via window.ethereum EIP-1193 standard
+                      </span>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5 flex-shrink-0">
+                    <span className="font-mono text-xs text-[#ffb0c9] font-semibold group-hover:text-white transition-colors">
                       Connect
                     </span>
                     <span className="material-symbols-outlined text-[#ffb0c9] text-base group-hover:translate-x-1 transition-transform">

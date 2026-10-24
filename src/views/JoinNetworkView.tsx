@@ -447,8 +447,8 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
               <div className="p-4 sm:p-5 rounded-xl bg-[#110b1c] border border-white/5 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono text-xs text-white flex items-center gap-1.5 font-semibold">
-                      <span className="material-symbols-outlined text-sm text-[#feb700]">code</span>
+                    <span className="font-mono text-xs text-white flex items-center gap-2 font-semibold">
+                      <img src="/assets/icons/github.svg" alt="GitHub" className="w-4 h-4 object-contain text-white" />
                       GitHub Commits
                     </span>
                     <span className="font-mono text-[10px] text-[#feb700] uppercase font-semibold">
@@ -475,8 +475,11 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
               <div className="p-4 sm:p-5 rounded-xl bg-[#110b1c] border border-white/5 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center justify-between mb-2">
-                    <span className="font-mono text-xs text-white flex items-center gap-1.5 font-semibold">
-                      <span className="material-symbols-outlined text-sm text-[#ff4799]">chat</span>
+                    <span className="font-mono text-xs text-white flex items-center gap-2 font-semibold">
+                      <div className="flex items-center gap-1.5">
+                        <img src="/assets/icons/discord.svg" alt="Discord" className="w-4 h-4 object-contain text-[#5865F2]" />
+                        <img src="/assets/icons/telegram.svg" alt="Telegram" className="w-4 h-4 object-contain text-[#24A1DE]" />
+                      </div>
                       Discord / Telegram
                     </span>
                     <span className="font-mono text-[10px] text-[#fbabff] uppercase font-semibold">
@@ -519,8 +522,8 @@ export const JoinNetworkView: React.FC<JoinNetworkViewProps> = ({
             <div className="rounded-2xl bg-gradient-to-b from-[#1b122b] to-[#0d051a] border border-[#ff4799]/40 p-5 shadow-xl relative overflow-hidden">
               <div className="flex items-center justify-between mb-5">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-lg bg-[#feb700] text-black font-display font-extrabold flex items-center justify-center text-sm shadow-md">
-                    CK
+                  <div className="w-10 h-10 rounded-lg bg-[#231c2f] border border-[#ff4799]/40 p-1 flex items-center justify-center shadow-md shrink-0">
+                    <img src="/logo.png" alt="CodeKrafters" className="w-full h-full object-contain" />
                   </div>
                   <div>
                     <div className="font-display font-bold text-base text-white">
